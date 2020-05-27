@@ -44,7 +44,12 @@ namespace FD.Infrastructure.Query
         {
             return DBConnection.Execute(sql, (object)parms, null);
         }
-        
+
+        public int ExecuteProc(string sp, dynamic parms = null)
+        {
+            return DBConnection.Execute(sp, (object)parms, commandType: CommandType.StoredProcedure);
+        }
+
         public IEnumerable<dynamic> QueryList(string sql, object param = null)
         {
             return DBConnection.Query<dynamic>(sql, param);
