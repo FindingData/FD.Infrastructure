@@ -114,6 +114,12 @@ namespace FD.Infrastructure.Repository
             return DBConnection.Execute(sql, (object)parms, _dbTransaction);
         }
 
+
+        public int ExecuteProc(string sp, dynamic parms = null)
+        {
+            return DBConnection.Execute(sp, (object)parms, commandType: CommandType.StoredProcedure);
+        }
+
         public long Insert(T entity)
         {
             return DBConnection.Insert(entity, _dbTransaction);
