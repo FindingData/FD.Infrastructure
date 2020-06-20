@@ -25,11 +25,7 @@ namespace FD.Infrastructure.Repository
                 if (_dbConnection == null)
                 {
                     _dbConnection = ConnectionFactory.GetDbConnection(dbAliase);
-                }
-                if (_dbConnection.State == ConnectionState.Closed && _dbConnection.State != ConnectionState.Connecting)
-                {
-                    _dbConnection.Open();
-                }
+                }               
                 return _dbConnection;
             }
             private set { this._dbConnection = value; }
