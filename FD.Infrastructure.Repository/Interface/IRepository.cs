@@ -92,6 +92,16 @@ namespace FD.Infrastructure.Repository.Interface
         /// <returns>受影响的行数|The number of rows affected.</returns>
         int Execute(string sql, dynamic parms = null);
 
+
+        /// <summary>
+        /// 执行存储过程
+        /// |Execute parameterize sp
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <param name="parms"></param>
+        /// <returns></returns>
+        int ExecuteProc(string sp, dynamic parms = null);
+
         /// <summary>
         /// 查询单个实体|
         /// Returns a single entity by a single id from table "Ts".  

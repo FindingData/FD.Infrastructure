@@ -10,7 +10,7 @@ namespace FD.Infrastructure.Query.Interface
     public interface ISqlQuery
     { 
         int Execute(string sql, dynamic parms = null);
-
+        int ExecuteProc(string sp, dynamic parms = null);
         dynamic Query(string sql,dynamic parms=null);
  
         IEnumerable<dynamic> QueryList(string sql, object param = null);
