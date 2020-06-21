@@ -26,11 +26,7 @@ namespace FD.Infrastructure.Query
                 if (_dbConnection == null)
                 {
                     _dbConnection = ConnectionFactory.GetDbConnection();
-                }
-                if (_dbConnection.State == ConnectionState.Closed && _dbConnection.State != ConnectionState.Connecting)
-                {
-                    _dbConnection.Open();
-                }
+                }              
                 return _dbConnection;
             }
             private set { this._dbConnection = value; }
