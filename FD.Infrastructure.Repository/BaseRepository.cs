@@ -196,8 +196,9 @@ namespace FD.Infrastructure.Repository
         /// <returns>The number of rows affected.</returns>
         public bool UpdatePart(dynamic data)
         {
+            //fix me:entry attribute write(false) unuseful
             Dictionary<string,object> dir = EntityToDictionary(data);
-
+             
             var type = typeof(T);
             var key = SqlMapperExtensions.KeyPropertiesCache(type).FirstOrDefault();
 
