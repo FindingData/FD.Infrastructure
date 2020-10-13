@@ -14,6 +14,9 @@ namespace FD.Infrastructure.Query
     /// </summary>
     public class SqlBuilder : ISqlBuilder
     {
+
+     
+
         /// <summary>
         /// SQL builder
         /// </summary>
