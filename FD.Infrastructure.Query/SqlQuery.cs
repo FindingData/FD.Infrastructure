@@ -14,6 +14,8 @@ namespace FD.Infrastructure.Query
 {
     public class SqlQuery : ISqlQuery
     {
+        public SqlQuery() { }
+
         public SqlQuery(string dbAliase = "")
         {
             this.dbAliase = dbAliase;
