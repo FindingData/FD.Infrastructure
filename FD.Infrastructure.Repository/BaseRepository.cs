@@ -25,22 +25,22 @@ namespace FD.Infrastructure.Repository
                 if (_dbConnection == null)
                 {
                     _dbConnection = ConnectionFactory.GetDbConnection(dbAliase);
-                }               
+                }
                 return _dbConnection;
             }
             private set { this._dbConnection = value; }
         }
 
-      
+
 
         public string TableName
         {
             get
-            { 
+            {
                 return SqlMapperExtensions.GetTableName(typeof(T));
             }
         }
-       
+
 
         private IDbTransaction _dbTransaction;
 
@@ -50,11 +50,11 @@ namespace FD.Infrastructure.Repository
             set { _dbTransaction = value; }
         }
 
-          /// <summary>
+        /// <summary>
         /// 事务状态|
         /// transaction's state
         /// </summary>
-       // public ETrancationState TrancationState { get; private set; } = ETrancationState.Closed;
+        // public ETrancationState TrancationState { get; private set; } = ETrancationState.Closed;
         /// <summary>
         /// 开启事务|
         /// Open transaction
@@ -67,7 +67,7 @@ namespace FD.Infrastructure.Repository
         }
 
         public BaseRepository()
-        {            
+        {
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace FD.Infrastructure.Repository
 
 
         public bool Delete(T entity)
-        {            
+        {
             return DBConnection.Delete(entity);
         }
 
@@ -125,6 +125,45 @@ namespace FD.Infrastructure.Repository
         {
             return DBConnection.Insert(entityList, _dbTransaction);
         }
+
+        /// <summary>
+        /// 批量插入数据|
+        /// Execute insert SQL.
+        /// </summary>
+        /// <param name="sql">SQL</param>
+        /// <param name="entities">entityList</param>
+        /// <param name="openTransaction"></param>
+        /// <returns>受影响的行数|The number of rows affected.</returns>
+        public bool InsertBatch(string sql, IEnumerable<T> entities)
+        {
+
+            using (IDbTransaction trans = OpenTransaction())
+            {
+                try
+                {
+                    //int res = Execute(sql, entities);
+                    int res = DBConnection.Execute(sql, entities, trans);
+                    //TrancationState = ETrancationState.Closed;
+                    if (res > 0)
+                    {
+                        trans.Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    //TrancationState = ETrancationState.Closed;
+                    throw ex;
+                }
+            }
+        }
+
 
         public T Query(object id)
         {

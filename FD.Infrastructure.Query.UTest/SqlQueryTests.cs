@@ -8,13 +8,35 @@ using System.Threading.Tasks;
 
 namespace FD.Infrastructure.Query.Tests
 {
+    
+
     [TestClass()]
     public class SqlQueryTests
     {
-        [TestMethod()]
-        public void QueryListTest()
+
+        [TestInitialize]
+        public void Initialize()
         {
-            var sql = new SqlQuery("LD_DBContext");
+            ConnectionFactory.ConfigRegister("DbContext");
+            ConnectionFactory.ConfigRegister("OaDbContext");
+        }
+
+        [TestMethod()]
+        public void MultiTest()
+        {
+            var sql = new SqlQuery("OaDbContext");
+            bool result;
+            try
+            {
+               sql.DBConnection.Open();
+               
+               result = true;
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            Assert.IsTrue(result);
         }
     }
 }

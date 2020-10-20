@@ -81,7 +81,7 @@ namespace FD.Infrastructure.Repository.Adapter
         /// <param name="entityToInsert">The entity to insert.</param>
         /// <returns>The Id of the row created.</returns>
         public int Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, string tableName, string columnList, string parameterList, IEnumerable<PropertyInfo> keyProperties, object entityToInsert, bool isList)
-        {
+        {            
             var propertyInfos = keyProperties as PropertyInfo[] ?? keyProperties.ToArray();
             string oracleSequence = "";
             for (int i = 0; i < propertyInfos.Length; i++)
