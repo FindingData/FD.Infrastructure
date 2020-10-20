@@ -14,7 +14,15 @@ namespace FD.Infrastructure.Query
 {
     public class SqlQuery : ISqlQuery
     {
-        
+        public SqlQuery() { }
+
+        public SqlQuery(string dbAliase = "")
+        {
+            this.dbAliase = dbAliase;
+        }
+
+        protected virtual string dbAliase { get; set; } 
+
         private IDbConnection _dbConnection;
         /// <summary>
         /// IDbConnection
@@ -25,16 +33,12 @@ namespace FD.Infrastructure.Query
             {
                 if (_dbConnection == null)
                 {
-                    _dbConnection = ConnectionFactory.GetDbConnection();
+                    _dbConnection = ConnectionFactory.GetDbConnection(dbAliase);
                 }              
                 return _dbConnection;
             }
             private set { this._dbConnection = value; }
-        }
-        public SqlQuery()
-        {
-          
-        }
+        }        
      
         public int Execute(string sql, dynamic parms = null)
         {

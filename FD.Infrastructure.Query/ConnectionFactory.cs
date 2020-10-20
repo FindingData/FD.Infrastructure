@@ -37,7 +37,7 @@ namespace FD.Infrastructure.Query
         }
         
 
-        public static IDbConnection GetDbConnection(string dbAliase = DefaultAliase)
+        public static IDbConnection GetDbConnection(string dbAliase)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace FD.Infrastructure.Query
                 {
                     throw new Exception("The key doesn't exist:" + dbAliase);
                 }
-                var conn = DBSettingDic[DefaultAliase];
+                var conn = DBSettingDic[dbAliase];
                 return new OracleConnection(conn);
             }
             catch (Exception ex)
