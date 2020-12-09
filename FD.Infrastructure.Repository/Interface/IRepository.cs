@@ -45,6 +45,16 @@ namespace FD.Infrastructure.Repository.Interface
         /// <returns>返回受影响行数|number of inserted rows if inserting a list.</returns>
         long Insert(IEnumerable<T> entityList);
 
+
+        // 批量插入数据|
+        /// Execute insert SQL.
+        /// </summary>
+        /// <param name="sql">SQL</param>
+        /// <param name="entities">entityList</param>
+        /// <param name="openTransaction"></param>
+        /// <returns>受影响的行数|The number of rows affected.</returns>
+        bool InsertBatch(string sql, IEnumerable<T> entities);
+
         /// <summary>
         /// 更新|
         /// Updates entity in table "Ts", checks if the entity is modified if the entity is tracked by the Get() extension.
