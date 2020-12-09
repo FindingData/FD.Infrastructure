@@ -85,23 +85,38 @@ namespace FD.Infrastructure.Query
             SqlBuilder sqlBuilder = new SqlBuilder();
 
             SqlBuilder sqlBuilderRows = new SqlBuilder(sql);                       
+           
+            if (!string.IsNullOrEmpty(whereString))
+            {             
+                 sqlBuilderRows.Where(whereString, param);
+            }
+
             if (order != null)
             {
                 sqlBuilderRows.OrderBy(order);
                 sqlBuilderRows.IsAse(asc);
             }
-            if (!string.IsNullOrEmpty(whereString))
-            {             
-                 sqlBuilderRows.Where(whereString, param);
-            }
-            sqlBuilder.Append($"with y as (select rownum rid,tb.* from ({sqlBuilderRows.SQL}) tb) select * from y",sqlBuilderRows.Arguments);
+
             if (pageSize > 0)
-            {
+            {               
                 if (pageNum <= 0)
                     pageNum = 1;
                 int numMin = (pageNum - 1) * pageSize + 1,
                 numMax = pageNum * pageSize;
-                sqlBuilder.Where("rid between :numMin and :numMax", new { numMin, numMax });
+
+                if (!string.IsNullOrEmpty(whereString) && whereString.Contains(":"))
+                {
+                    sqlBuilder.Append($"with y as (select rownum rid,tb.* from ({sqlBuilderRows.SQL}) tb) select * from y", sqlBuilderRows.Arguments);
+                    sqlBuilder.Where("rid between :numMin and :numMax", new { numMin, numMax });
+                }
+                else
+                {
+                    sqlBuilder.Append($"select * from (select rownum rid,tb.* from ({sqlBuilderRows.SQL}) tb where ROWNUM<={numMax}) where rid>={numMin}", sqlBuilderRows.Arguments);
+                }                
+            }
+            else
+            {
+                sqlBuilder.Append($"with y as (select rownum rid,tb.* from ({sqlBuilderRows.SQL}) tb) select * from y", sqlBuilderRows.Arguments);
             }
             return sqlBuilder;
         }
